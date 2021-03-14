@@ -49,7 +49,7 @@ errco_t loop() {
       cmd = strtol(cmdbuf, NULL, 10);
       switch (cmd) {
         case add_entry:
-          err = entry_input(&new_entry, stdin);
+          err = entry_input(&new_entry, stdin, stdin, stdin, stdin, stdin, stdin);
           if (err != EXIT_SUCCESS) {
             errputs(err);
             return err;
@@ -58,7 +58,7 @@ errco_t loop() {
           break;
 
         case find_entry:
-          err = entry_input(&new_entry, stdin);
+          err = entry_input(&new_entry, stdin, stdin, stdin, stdin, stdin, stdin);
           if (err != EXIT_SUCCESS) {
             errputs(err);
             return err;

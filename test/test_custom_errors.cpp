@@ -4,6 +4,15 @@ extern "C" {
 #include "../headers/custom_errors.h"
 }
 
+TEST (custom_errors_test_5, custom_errors_test_5){
+    errco_t test = 5; // ErrorMallocFailed
+    testing::internal::CaptureStdout();
+    errputs(test);
+    std::string output = testing::internal::GetCapturedStdout();
+
+    EXPECT_EQ(output, "[Error]:I/O error (code 5) \n");
+}
+
 TEST (custom_errors_test_200, custom_errors_test_200){
     errco_t test = 200; // ErrorMallocFailed
     testing::internal::CaptureStdout();

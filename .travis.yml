@@ -1,0 +1,41 @@
+language: cpp
+
+dist: focal #20.04 (Focal Fossa)
+
+os: linux
+compiler:
+  - g++
+
+env:
+  global:
+    - LINUX_DIST=focal 
+    - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+    - compiler=g++
+    - CXX_FLAGS="-Wall -Werror -Wpedantic"
+    - RUN_TESTS=true
+    - COVERAGE=true
+    - CODECOV_TOKEN='d4540ca5-3c4b-452b-83df-9d32f83e2d2d'
+
+branches:
+  only:
+  - assignment_1
+
+install:
+  - sudo apt update
+  - sudo apt install cmake
+  - sudo apt install valgrind
+  - sudo apt install lcov
+  - sudo apt install libgtest-dev
+  - cd /usr/src/gtest
+  - sudo cmake .
+  - cd -
+
+script:
+  - sudo cmake .
+  - sudo make
+  - sudo valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./tests
+
+
+after_script:
+  - lcov --capture  --directory . --output-file coverage.info
+  - bash <(curl -s https://codecov.io/bash) -f coverage.info

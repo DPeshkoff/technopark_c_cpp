@@ -4,7 +4,7 @@ dist: focal #20.04 (Focal Fossa)
 
 os: linux
 compiler:
-  - g++
+    - g++
 
 env:
   global:
@@ -18,24 +18,38 @@ env:
 
 branches:
   only:
-  - assignment_1
+    - assignment_1
 
 install:
-  - sudo apt update
-  - sudo apt install cmake
-  - sudo apt install valgrind
-  - sudo apt install lcov
-  - sudo apt install libgtest-dev
-  - cd /usr/src/gtest
-  - sudo cmake .
-  - cd -
+    - sudo apt update
+    - sudo apt install cmake
+    - sudo apt install valgrind
+    - sudo apt install clang-format
+    - sudo apt install lcov
+    - sudo apt install libgtest-dev
+    - cd /usr/src/gtest
+    - sudo cmake .
+    - cd -
+
+before_script:
+    - cd ./src
+    - sudo clang-format -style=Google *.c
+    - cd ..
+    - cd ./headers
+    - sudo clang-format -style=Google *.h
+    - cd ..
+    - cd ./test
+    - clang-format -style=Google *.cpp
+    - cd ..
 
 script:
-  - sudo cmake .
-  - sudo make
-  - sudo valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./tests
+    - sudo cmake .
+    - sudo make
+    - cppcheck . --inconclusive --enable=all --language=c --suppress=syntaxError:test/test_io.cpp --suppress=syntaxError:test/test_list.cpp --suppress=syntaxError:test/test_custom_errors.cpp --suppress=missingInclude
+# reason: cpp files with gtest and gtest itself
+    - sudo valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./tests
 
 
 after_script:
-  - lcov --capture  --directory . --output-file coverage.info
-  - bash <(curl -s https://codecov.io/bash) -f coverage.info
+    - lcov --capture  --directory . --output-file coverage.info
+    - bash <(curl -s https://codecov.io/bash) -f coverage.info

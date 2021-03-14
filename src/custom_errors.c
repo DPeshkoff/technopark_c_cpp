@@ -14,12 +14,12 @@ errco_t errputs(errco_t err_co) {
       printf("[Error]:ErrorNullEntry (code %d) \n", err_co);
       break;
 
-    case 204:
-      printf("[Error]:ErrorNumberConversionFail (code %d) \n", err_co);
+    case 202:
+      printf("[Error]:ErrorBufferisEmpty (code %d) \n", err_co);
       break;
 
-    case 0:
-      // printf("[Success]:Success (code %d) \n", err_co);
+    case 203:
+      printf("[Error]:ErrorNumberConversionFail (code %d) \n", err_co);
       break;
 
     default:
@@ -27,5 +27,5 @@ errco_t errputs(errco_t err_co) {
       break;
   }
 
-  return ESUCCESS;
+  return EXIT_SUCCESS;
 }

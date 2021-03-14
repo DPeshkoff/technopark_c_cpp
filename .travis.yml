@@ -23,6 +23,7 @@ branches:
 install:
     - sudo apt update
     - sudo apt install cmake
+    - sudo apt install cppcheck
     - sudo apt install valgrind
     - sudo apt install clang-format
     - sudo apt install lcov

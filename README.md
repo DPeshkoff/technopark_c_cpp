@@ -1,6 +1,6 @@
 # Углубленное программирование на C/C++ (индивидуальные задания)
 
-[![Build Status](https://travis-ci.com/DPeshkoff/technopark_c_cpp.svg?token=nAYtSURxmXYCbVKs2WfN&branch=master)](https://travis-ci.com/DPeshkoff/technopark_c_cpp)
+[![Build Status](https://travis-ci.com/DPeshkoff/technopark_c_cpp.svg?token=nAYtSURxmXYCbVKs2WfN&branch=assignment_1)](https://travis-ci.com/DPeshkoff/technopark_c_cpp)
 [![codecov](https://codecov.io/gh/DPeshkoff/technopark_c_cpp/branch/assignment_1/graph/badge.svg?token=AULEY3NHZM)](https://codecov.io/gh/DPeshkoff/technopark_c_cpp)
 
 ## Индивидуальное задание №1

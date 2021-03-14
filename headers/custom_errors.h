@@ -1,12 +1,11 @@
 #pragma once
 
-#define EMF 200     // ErrorMallocFailure
-#define ESUCCESS 0  // Success
-#define ENE 201     // ErrorNullEntry
+#define EXIT_SUCCESS 0       // Success
 #define EIO 5       // I/O Error
+#define EMF 200     // ErrorMallocFailure
+#define ENE 201     // ErrorNullEntry
 #define EBE 202     // ErrorBufferisEmpty
-#define ESTRCF 203  // ErrorStringCopyFailed
-#define ENCF 204    // ErrorNumberConversionFail
+#define ENCF 203    // ErrorNumberConversionFail
 
 typedef int errco_t;  // Error code type
 

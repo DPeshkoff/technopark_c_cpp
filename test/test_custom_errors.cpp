@@ -4,15 +4,6 @@ extern "C" {
 #include "../headers/custom_errors.h"
 }
 
-TEST (custom_errors_test_204, custom_errors_test_204){
-    errco_t test = 204; // ErrorNumberConversionFail
-    testing::internal::CaptureStdout();
-    errputs(test);
-    std::string output = testing::internal::GetCapturedStdout();
-
-    EXPECT_EQ(output, "[Error]:ErrorNumberConversionFail (code 204) \n");
-}
-
 TEST (custom_errors_test_200, custom_errors_test_200){
     errco_t test = 200; // ErrorMallocFailed
     testing::internal::CaptureStdout();
@@ -29,6 +20,24 @@ TEST (custom_errors_test_201, custom_errors_test_201){
     std::string output = testing::internal::GetCapturedStdout();
 
     EXPECT_EQ(output, "[Error]:ErrorNullEntry (code 201) \n");
+}
+
+TEST (custom_errors_test_202, custom_errors_test_202){
+    errco_t test = 202; // ErrorBufferisEmpty
+    testing::internal::CaptureStdout();
+    errputs(test);
+    std::string output = testing::internal::GetCapturedStdout();
+
+    EXPECT_EQ(output, "[Error]:ErrorBufferisEmpty (code 202) \n");
+}
+
+TEST (custom_errors_test_203, custom_errors_test_203){
+    errco_t test = 203; // ErrorNumberConversionFail
+    testing::internal::CaptureStdout();
+    errputs(test);
+    std::string output = testing::internal::GetCapturedStdout();
+
+    EXPECT_EQ(output, "[Error]:ErrorNumberConversionFail (code 203) \n");
 }
 
 TEST (custom_errors_test_501, custom_errors_test_501){

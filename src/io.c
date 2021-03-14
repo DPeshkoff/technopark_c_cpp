@@ -1,9 +1,9 @@
 #include "../headers/io.h"
 
-errco_t str_input(char **input_field) {
+errco_t str_input(char **input_field, FILE * input) {
   char buffer[MAXLENGTH];
 
-  if (fgets(buffer, MAXLENGTH, stdin) != NULL) {
+  if (fgets(buffer, MAXLENGTH, input) != NULL) {
     errno = 0;
 
     *input_field = (char *)malloc(sizeof(buffer));
@@ -26,12 +26,12 @@ errco_t str_input(char **input_field) {
   return EXIT_SUCCESS;
 }
 
-errco_t date_input(date_t *input_field) {
+errco_t date_input(date_t *input_field, FILE * input) {
   char buffer[MAXLENGTH];
 
   char *num_end;
 
-  if (fgets(buffer, MAXLENGTH, stdin) != NULL) {
+  if (fgets(buffer, MAXLENGTH, input) != NULL) {
     if (input_field == NULL) {
       return ENOMEM;
     } else {
@@ -62,10 +62,10 @@ errco_t date_input(date_t *input_field) {
   return EXIT_SUCCESS;
 }
 
-errco_t tbool_input(tbool_t *tbool) {
+errco_t tbool_input(tbool_t *tbool, FILE * input) {
   char buffer[MAXLENGTH];
 
-  if (fgets(buffer, MAXLENGTH, stdin) != NULL) {
+  if (fgets(buffer, MAXLENGTH, input) != NULL) {
     if (tbool == NULL) {
       return EMF;
     }
@@ -89,10 +89,10 @@ errco_t tbool_input(tbool_t *tbool) {
     return EIO;
   }
 
-  return ESUCCESS;
+  return EXIT_SUCCESS;
 }
 
-errco_t entry_input(entry_t *new_entry) {
+errco_t entry_input(entry_t *new_entry, FILE *input) {
   errco_t err = 0;
 
   if (new_entry == NULL) {
@@ -100,42 +100,42 @@ errco_t entry_input(entry_t *new_entry) {
   }
 
   printf("%s\n", "Please, enter organization name: ");
-  err = str_input(&(new_entry->organization));
+  err = str_input(&(new_entry->organization), input);
   if (err != EXIT_SUCCESS) {
     errputs(err);
     return err;
   }
 
   printf("%s\n", "Please, enter type of document: ");
-  err = str_input(&(new_entry->type_of_document));
+  err = str_input(&(new_entry->type_of_document), input);
   if (err != EXIT_SUCCESS) {
     errputs(err);
     return err;
   }
 
   printf("%s\n", "Please, enter document name: ");
-  err = str_input(&(new_entry->document_name));
+  err = str_input(&(new_entry->document_name), input);
   if (err != EXIT_SUCCESS) {
     errputs(err);
     return err;
   }
 
   printf("%s\n", "Please, enter acceptance date: ");
-  err = date_input(&(new_entry->accepted));
+  err = date_input(&(new_entry->accepted), input);
   if (err != EXIT_SUCCESS) {
     errputs(err);
     return err;
   }
 
   printf("%s\n", "Please, enter activation date: ");
-  err = date_input(&(new_entry->active_since));
+  err = date_input(&(new_entry->active_since), input);
   if (err != EXIT_SUCCESS) {
     errputs(err);
     return err;
   }
 
   printf("%s\n", "Please, enter translation status: ");
-  err = tbool_input(&(new_entry->is_translated));
+  err = tbool_input(&(new_entry->is_translated), input);
   if (err != EXIT_SUCCESS) {
     errputs(err);
     return err;

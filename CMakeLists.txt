@@ -4,9 +4,9 @@ project(techopark_c_cpp)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_C_FLAGS "--coverage")
+set(CMAKE_C_FLAGS "-Wall -Werror -Wpedantic --coverage")
 
-set(CMAKE_CXX_FLAGS "--coverage")
+set(CMAKE_CXX_FLAGS "-Wall -Werror -Wpedantic --coverage")
 
 set(SOURCE main.c)	
 

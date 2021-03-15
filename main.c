@@ -27,29 +27,29 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../headers/custom_errors.h"
-#include "../headers/data.h"
-#include "../headers/io.h"
-#include "../headers/list.h"
+#include "custom_errors.h"
+#include "data.h"
+#include "io.h"
+#include "list.h"
 
 enum states { leave = 0, add_entry = 1, find_entry = 2, print_list = 3 };
 
-errco_t loop() {
+errco_t main_io_loop() {
   node_t* head = NULL;
 
   char cmdbuf[MAXLENGTH];
   int cmd;
 
   errco_t err = 0;
-
+  printf("Available commands:\n 0 - exit\n 1 - add_entry\n 2 - find entry\n 3 - print current list\n");
   do {
     entry_t new_entry;
-    printf("%s\n", "Enter command:\n");
+    printf("Enter command:\n");
     if (fgets(cmdbuf, MAXLENGTH, stdin) != NULL) {
       cmd = strtol(cmdbuf, NULL, 10);
       switch (cmd) {
         case add_entry:
-          err = entry_input(&new_entry, stdin, stdin, stdin, stdin, stdin, stdin);
+          err = entry_input(&new_entry, stdin);
           if (err != EXIT_SUCCESS) {
             errputs(err);
             return err;
@@ -58,7 +58,7 @@ errco_t loop() {
           break;
 
         case find_entry:
-          err = entry_input(&new_entry, stdin, stdin, stdin, stdin, stdin, stdin);
+          err = entry_input(&new_entry, stdin);
           if (err != EXIT_SUCCESS) {
             errputs(err);
             return err;
@@ -100,7 +100,7 @@ errco_t loop() {
 
 int main(int argc, char* argv[]) {
   errco_t err;
-  err = loop();
+  err = main_io_loop();
   if (err != EXIT_SUCCESS) {
     errputs(err);
     return err;

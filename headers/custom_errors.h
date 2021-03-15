@@ -1,5 +1,8 @@
 #pragma once
 
+
+#include <stdio.h>
+
 #define EXIT_SUCCESS 0       // Success
 #define EIO 5       // I/O Error
 #define EMF 200     // ErrorMallocFailure

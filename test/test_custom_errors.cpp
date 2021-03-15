@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 extern "C" {
-#include "../headers/custom_errors.h"
+#include "custom_errors.h"
 }
 
 TEST (custom_errors_test_5, custom_errors_test_5){

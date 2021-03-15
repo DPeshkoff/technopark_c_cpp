@@ -1,4 +1,4 @@
-#include "../headers/custom_errors.h"
+#include "custom_errors.h"
 
 errco_t errputs(errco_t err_co) {
   switch (err_co) {

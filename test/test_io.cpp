@@ -3,7 +3,7 @@
 #include <string>
 
 extern "C" {
-#include "../headers/io.h"
+#include "io.h"
 }
 
 TEST (str_input_test, str_input_test){
@@ -24,11 +24,12 @@ TEST (str_input_test, str_input_test){
     std::string str(test);
     EXPECT_EQ(test, control);
     std::remove("./test_input.txt");
+    free(test);
 }
 
 TEST (date_input_test, date_input_test){
     date_t date_test = {1, 1, 2001};
-    date_t test_result = {NULL, NULL, NULL};
+    date_t test_result = {0, 0, 0};
     FILE * test_input_create = fopen("./test_input.txt", "w");
     if (test_input_create != NULL)
     {
@@ -68,45 +69,28 @@ TEST (tbool_input_test, tbool_input_test){
 
 
 TEST (entry_input_test, entry_input_test){
-    date_t date_test = {NULL, NULL, NULL};
-    entry_t test_entry = {"test", "test", "test", date_test, date_test, NS};
+    date_t date_test = {0, 0, 0};
+    entry_t test_entry = {(char *)"test", (char *)"test", (char *)"test", date_test, date_test, NS};
     entry_t test_result = {NULL, NULL, NULL, date_test, date_test, NS};
-    FILE * test_input_create_0 = fopen("./test_input_0.txt", "w");
-    FILE * test_input_create_1 = fopen("./test_input_1.txt", "w");
-    FILE * test_input_create_2 = fopen("./test_input_2.txt", "w");
-    FILE * test_input_create_3 = fopen("./test_input_3.txt", "w");
-    FILE * test_input_create_4 = fopen("./test_input_4.txt", "w");
-    FILE * test_input_create_5 = fopen("./test_input_5.txt", "w");
-    if ((test_input_create_0 != NULL)&&(test_input_create_1 != NULL)&&(test_input_create_2 != NULL)&&(test_input_create_3 != NULL)&&(test_input_create_4 != NULL)&&(test_input_create_5 != NULL))
+
+    FILE * test_input_create = fopen("./test_input.txt", "w");
+
+
+    if (test_input_create != NULL)
     {
-        fputs("test\n", test_input_create_0); 
-        fclose (test_input_create_0);
-        fputs("test\n", test_input_create_1); 
-        fclose (test_input_create_1);
-        fputs("test\n", test_input_create_2); 
-        fclose (test_input_create_2);
-        fputs("0 0 0\n", test_input_create_3); 
-        fclose (test_input_create_3);
-        fputs("0 0 0\n", test_input_create_4); 
-        fclose (test_input_create_4);
-        fputs("0\n", test_input_create_5); 
-        fclose (test_input_create_5);
+        fputs("test\n", test_input_create); 
+        fputs("test\n", test_input_create); 
+        fputs("test\n", test_input_create); 
+        fputs("0 0 0\n", test_input_create); 
+        fputs("0 0 0\n", test_input_create); 
+        fputs("0\n", test_input_create); 
+        fclose (test_input_create);
     }
-    FILE * test_input_read_0 = fopen("./test_input_0.txt", "r");
-    FILE * test_input_read_1 = fopen("./test_input_1.txt", "r");
-    FILE * test_input_read_2 = fopen("./test_input_2.txt", "r");
-    FILE * test_input_read_3 = fopen("./test_input_3.txt", "r");
-    FILE * test_input_read_4 = fopen("./test_input_4.txt", "r");
-    FILE * test_input_read_5 = fopen("./test_input_5.txt", "r");
-    if ((test_input_read_0 != NULL)&&(test_input_read_1 != NULL)&&(test_input_read_2 != NULL)&&(test_input_read_3 != NULL)&&(test_input_read_4 != NULL)&&(test_input_read_5 != NULL))
+    FILE * test_input_read = fopen("./test_input.txt", "r");
+    if (test_input_read != NULL)
     {
-        entry_input(&test_result, test_input_read_0, test_input_read_1, test_input_read_2, test_input_read_3, test_input_read_4, test_input_read_5);
-        fclose (test_input_read_0);
-        fclose (test_input_read_1);
-        fclose (test_input_read_2);
-        fclose (test_input_read_3);
-        fclose (test_input_read_4);
-        fclose (test_input_read_5);
+        entry_input(&test_result, test_input_read);
+        fclose (test_input_read);
     }
     std::string test_string_0(test_result.organization);
     std::string control_string_0(test_entry.organization);
@@ -130,19 +114,18 @@ TEST (entry_input_test, entry_input_test){
 
     EXPECT_EQ(test_result.is_translated, test_entry.is_translated);
 
-    std::remove("./test_input_0.txt");
-    std::remove("./test_input_1.txt");
-    std::remove("./test_input_2.txt");
-    std::remove("./test_input_3.txt");
-    std::remove("./test_input_4.txt");
-    std::remove("./test_input_5.txt");
+    std::remove("./test_input.txt");
+
+    free(test_result.organization);
+    free(test_result.type_of_document);
+    free(test_result.document_name);
 }
 
 
 TEST (pdata_test, pdata_test){
     date_t date_test = {1, 1, 2001};
     tbool_t test_tbool = NS;
-    char * test_str = "test";
+    char * test_str = (char *)"test";
     entry_t test_entry = {test_str, test_str, test_str, date_test, date_test, test_tbool};
 
     testing::internal::CaptureStdout();

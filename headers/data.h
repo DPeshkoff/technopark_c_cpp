@@ -30,12 +30,10 @@ typedef struct entry_t {
 
 #define MAX_DAYS_MONTH 31
 #define MAX_MONTHS_YEAR 12
-#define UNIX_ERA 1970
-
-entry_t to_entry_t(char* const organization, char* const type_of_document,
-                   char* const document_name, date_t const accepted,
-                   date_t const active_since, const tbool_t is_translated);
+#define MIN_YEAR 1
 
 date_t to_date_t(const int dd, const int mm, const int yy);
 
 bool date_t_cmp(const date_t date1, const date_t date2);
+
+

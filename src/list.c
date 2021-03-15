@@ -1,4 +1,4 @@
-#include "../headers/list.h"
+#include "list.h"
 
 /*
  * list_init
@@ -32,7 +32,6 @@ errco_t list_printf(node_t **start) {
   node_t *tmp = *start;
 
   while (tmp != NULL) {
-    printf("%s\n", "test");
     pdata(&(tmp->value));
     tmp = tmp->next;
   }
@@ -46,29 +45,17 @@ errco_t list_find(node_t **start, entry_t pattern) {
   node_t *tmp = *start;
 
   while (tmp != NULL) {
-    if ((strlen(pattern.organization) == 0 ||
-         strncmp(pattern.organization, tmp->value.organization,
-                 strlen(pattern.organization)) == 0) &&
-        (strlen(pattern.type_of_document) == 0 ||
-         strncmp(pattern.type_of_document, tmp->value.type_of_document,
-                 strlen(pattern.type_of_document)) == 0) &&
-        (strlen(pattern.document_name) == 0 ||
-         strncmp(pattern.document_name, tmp->value.organization,
-                 strlen(pattern.document_name)) == 0) &&
-        (date_t_cmp(pattern.accepted, tmp->value.accepted) == 1) &&
-        (date_t_cmp(pattern.active_since, tmp->value.active_since) == 1) &&
-        (pattern.is_translated == NS ||
-         pattern.is_translated == tmp->value.is_translated ||
-         tmp->value.is_translated == NS)) {
+    if (check_pattern(tmp, pattern)) {
       is_found = 1;
-      printf("%s\n", "Entry found: ");
+      printf("Entry found: \n");
       pdata(&(tmp->value));
-      tmp = tmp->next;
-    } else
-      tmp = tmp->next;
+    } 
+    tmp = tmp->next;
   }
 
-  if (is_found != 1) printf("%s", "No entries found.\n");
+  if (!is_found){
+    printf("No entries found.\n");
+  }
 
   return EXIT_SUCCESS;
 }
@@ -87,4 +74,27 @@ errco_t list_delete(node_t **start) {
   }
 
   return EXIT_SUCCESS;
+}
+
+bool check_pattern (node_t * tmp, entry_t pattern)
+{
+  if ((strlen(pattern.organization) == 0 ||
+         strncmp(pattern.organization, tmp->value.organization,
+                 strlen(pattern.organization)) == 0) &&
+        (strlen(pattern.type_of_document) == 0 ||
+         strncmp(pattern.type_of_document, tmp->value.type_of_document,
+                 strlen(pattern.type_of_document)) == 0) &&
+        (strlen(pattern.document_name) == 0 ||
+         strncmp(pattern.document_name, tmp->value.organization,
+                 strlen(pattern.document_name)) == 0) &&
+        (date_t_cmp(pattern.accepted, tmp->value.accepted) == 1) &&
+        (date_t_cmp(pattern.active_since, tmp->value.active_since) == 1) &&
+        (pattern.is_translated == NS ||
+         pattern.is_translated == tmp->value.is_translated ||
+         tmp->value.is_translated == NS)) {
+           return 1;
+         }
+         else{
+           return 0;
+         }
 }

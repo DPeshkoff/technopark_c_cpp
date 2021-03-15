@@ -11,7 +11,6 @@ env:
     - LINUX_DIST=focal 
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
     - compiler=g++
-    - CXX_FLAGS="-Wall -Werror -Wpedantic"
     - RUN_TESTS=true
     - COVERAGE=true
     - CODECOV_TOKEN='d4540ca5-3c4b-452b-83df-9d32f83e2d2d'
@@ -34,10 +33,10 @@ install:
 
 before_script:
     - cd ./src
-    - sudo clang-format -style=Google *.c
+    - clang-format -style=Google *.c
     - cd ..
     - cd ./headers
-    - sudo clang-format -style=Google *.h
+    - clang-format -style=Google *.h
     - cd ..
     - cd ./test
     - clang-format -style=Google *.cpp
@@ -46,9 +45,9 @@ before_script:
 script:
     - sudo cmake .
     - sudo make
-    - cppcheck . --inconclusive --enable=all --language=c --suppress=syntaxError:test/test_io.cpp --suppress=syntaxError:test/test_list.cpp --suppress=syntaxError:test/test_custom_errors.cpp --suppress=missingInclude
-# reason: cpp files with gtest and gtest itself
-    - sudo valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./tests
+    - cppcheck main.c ./src --inconclusive --enable=all --language=c --suppress=missingInclude
+# --suppress=missingInclude reason: cppcheck wrongfully thinks I do not have includes (while I have them)
+    - valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./tests || travis_terminate 1
 
 
 after_script:

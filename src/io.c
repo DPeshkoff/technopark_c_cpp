@@ -1,4 +1,4 @@
-#include "../headers/io.h"
+#include "io.h"
 
 errco_t str_input(char **input_field, FILE * input) {
   char buffer[MAXLENGTH];
@@ -16,9 +16,6 @@ errco_t str_input(char **input_field, FILE * input) {
     buffer[strlen(buffer) - 1] = '\0';
 
     strcpy(*input_field, buffer);
-    /*
-        // TODO STRCOPY_S
-    */
   } else {
     return EIO;
   }
@@ -36,23 +33,15 @@ errco_t date_input(date_t *input_field, FILE * input) {
       return ENOMEM;
     } else {
       int dd = strtol(buffer, &num_end, 10);
+      int mm = strtol(num_end, &num_end, 10);
+      int yy = strtol(num_end, NULL, 10);
 
-      if (dd == 0 || (dd > 0 && dd <= MAX_DAYS_MONTH)) {
-        int mm = strtol(num_end, &num_end, 10);
-        if (mm == 0 || (mm > 0 && mm <= MAX_MONTHS_YEAR)) {
-          int yy = strtol(num_end, NULL, 10);
-          if (yy == 0 || (yy > 0 && yy >= UNIX_ERA)) {
+      if (check_date(&dd, &mm, &yy)) {
             *input_field = to_date_t(dd, mm, yy);
 
-          } else {
-            return ENCF;
-          }
         } else {
-          return ENCF;
+            return ENCF;
         }
-      } else {
-        return ENCF;
-      }
     }
 
   } else {
@@ -92,50 +81,50 @@ errco_t tbool_input(tbool_t *tbool, FILE * input) {
   return EXIT_SUCCESS;
 }
 
-errco_t entry_input(entry_t *new_entry, FILE *input_0, FILE *input_1, FILE *input_2, FILE *input_3, FILE *input_4, FILE *input_5) {
+errco_t entry_input(entry_t *new_entry, FILE *input_0) {
   errco_t err = 0;
 
   if (new_entry == NULL) {
     return ENE;
   }
 
-  printf("%s\n", "Please, enter organization name: ");
+  printf("Please, enter organization name: \n");
   err = str_input(&(new_entry->organization), input_0);
   if (err != EXIT_SUCCESS) {
     errputs(err);
     return err;
   }
 
-  printf("%s\n", "Please, enter type of document: ");
-  err = str_input(&(new_entry->type_of_document), input_1);
+  printf("Please, enter type of document: \n");
+  err = str_input(&(new_entry->type_of_document), input_0);
   if (err != EXIT_SUCCESS) {
     errputs(err);
     return err;
   }
 
-  printf("%s\n", "Please, enter document name: ");
-  err = str_input(&(new_entry->document_name), input_2);
+  printf("Please, enter document name: \n");
+  err = str_input(&(new_entry->document_name), input_0);
   if (err != EXIT_SUCCESS) {
     errputs(err);
     return err;
   }
 
-  printf("%s\n", "Please, enter acceptance date: ");
-  err = date_input(&(new_entry->accepted), input_3);
+  printf("Please, enter acceptance date: \n");
+  err = date_input(&(new_entry->accepted), input_0);
   if (err != EXIT_SUCCESS) {
     errputs(err);
     return err;
   }
 
-  printf("%s\n", "Please, enter activation date: ");
-  err = date_input(&(new_entry->active_since), input_4);
+  printf("Please, enter activation date: \n");
+  err = date_input(&(new_entry->active_since), input_0);
   if (err != EXIT_SUCCESS) {
     errputs(err);
     return err;
   }
 
-  printf("%s\n", "Please, enter translation status: ");
-  err = tbool_input(&(new_entry->is_translated), input_5);
+  printf("Please, enter translation status: \n");
+  err = tbool_input(&(new_entry->is_translated), input_0);
   if (err != EXIT_SUCCESS) {
     errputs(err);
     return err;
@@ -150,28 +139,28 @@ errco_t tbool_translation(const tbool_t tbool) {
   int bytes;
   switch (tbool) {
     case TRUE:
-      bytes = printf("%s", "Translation exists");
+      bytes = printf("Translation exists");
       if (bytes == 0) {
         return EIO;
       }
       break;
 
     case FALSE:
-      bytes = printf("%s", "Translation does not exist");
+      bytes = printf("Translation does not exist");
       if (bytes == 0) {
         return EIO;
       }
       break;
 
     case NS:
-      bytes = printf("%s", "Translation not specified");
+      bytes = printf("Translation not specified");
       if (bytes == 0) {
         return EIO;
       }
       break;
 
     default:
-      bytes = printf("%s", "Unknown translation status");
+      bytes = printf("Unknown translation status");
       if (bytes == 0) {
         return EIO;
       }
@@ -196,4 +185,16 @@ errco_t pdata(entry_t *entry) {
     if (bytes == 0) return EIO;
   }
   return EXIT_SUCCESS;
+}
+
+bool check_date (int * dd, int * mm, int * yy)
+{
+  if ((*dd == 0 || (*dd > 0 && *dd <= MAX_DAYS_MONTH)) &&
+      (*mm == 0 || (*mm > 0 && *mm <= MAX_MONTHS_YEAR)) &&
+      (*yy == 0 || (*yy > 0 && *yy >= MIN_YEAR))) {
+           return 1;
+         }
+         else{
+           return 0;
+         }
 }

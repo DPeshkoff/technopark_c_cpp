@@ -85,7 +85,7 @@ bool check_pattern (node_t * tmp, entry_t pattern)
          strncmp(pattern.type_of_document, tmp->value.type_of_document,
                  strlen(pattern.type_of_document)) == 0) &&
         (strlen(pattern.document_name) == 0 ||
-         strncmp(pattern.document_name, tmp->value.organization,
+         strncmp(pattern.document_name, tmp->value.document_name,
                  strlen(pattern.document_name)) == 0) &&
         (date_t_cmp(pattern.accepted, tmp->value.accepted) == 1) &&
         (date_t_cmp(pattern.active_since, tmp->value.active_since) == 1) &&

@@ -1,0 +1,69 @@
+language: cpp
+
+dist: focal #20.04 (Focal Fossa)
+
+os: linux
+compiler:
+    - g++
+
+env:
+  global:
+    - LINUX_DIST=focal 
+    - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+    - compiler=g++
+    - RUN_TESTS=true
+    - COVERAGE=true
+    - CODECOV_TOKEN="cbcd414d-7229-42fb-9d40-7e3f4c4e6b01"
+
+branches:
+  only:
+    - assignment_2
+
+install:
+    - sudo apt update
+    - sudo apt install cmake
+    - sudo apt install cppcheck
+    - sudo apt install valgrind
+    - sudo apt install clang-format
+    - sudo apt install lcov
+    - sudo apt install libgtest-dev
+    - cd /usr/src/gtest
+    - sudo cmake .
+    - cd -
+
+before_script:
+    - cd ./src
+    - clang-format -style=Google *.c
+    - cd ..
+    - cd ./headers
+    - clang-format -style=Google *.h
+    - cd ..
+    - cd ./test
+    - clang-format -style=Google *.cpp
+    - cd ..
+    - cd ./multithread/src
+    - clang-format -style=Google *.c
+    - cd ..
+    - cd ..
+    - cd ./singlethread/src
+    - clang-format -style=Google *.c
+    - cd ..
+    - cd ..
+
+script:
+    - sudo cmake .
+    - sudo make
+    - cppcheck main.c ./src ./singlethread/src ./multithread/src --inconclusive --enable=all --language=c --suppress=missingInclude --suppress=unusedFunction --suppress=memleak #wrong accusations of missing includes, unused list_printf (is used) and strange memleak in hash.c - I prefer valgrind's opinion
+    - cppcheck ./test --inconclusive --enable=all --suppress=missingInclude
+    - sudo valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./test/singlethread_test || travis_terminate 1
+    - sudo valgrind --tool=cachegrind ./test/singlethread_test || travis_terminate 1
+    - sudo valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./test/multithread_test || travis_terminate 1
+    - sudo valgrind --tool=cachegrind ./test/multithread_test || travis_terminate 1
+
+after_script:
+    - lcov --capture --directory ./singlethread/CMakeFiles/singlethread_lib.dir/src --output-file coverage_singlethread.info
+    - lcov --capture --directory ./test/CMakeFiles/singlethread_test.dir/__/src --output-file coverage_singlethread_test.info
+    - lcov --capture --directory ./multithread/CMakeFiles/multithread_lib.dir/src --output-file coverage_multithread.info
+    - lcov --capture --directory ./test/CMakeFiles/multithread_test.dir/__/src --output-file coverage_multithread_test.info
+    - lcov -a coverage_singlethread.info -a coverage_singlethread_test.info-o -a coverage_multithread.info -a coverage_multithread_test.info coverage.info
+    - bash <(curl -s https://codecov.io/bash) -f coverage.info

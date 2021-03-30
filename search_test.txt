@@ -1,0 +1,27 @@
+Guido
+van Rossum
+Teamlead
+0
+12.5
+15000.5
+13.5
+Bill
+Gates
+Teamlead
+0
+55.5
+15000.5
+12.5
+Louis
+d'Provence
+Manager
+0
+12.5
+15000.5
+13.5
+Louis
+d'Orlean
+Teamlead
+17.5
+15000.5
+13.5

@@ -13,7 +13,7 @@ env:
     - compiler=g++
     - RUN_TESTS=true
     - COVERAGE=true
-    - CODECOV_TOKEN="cbcd414d-7229-42fb-9d40-7e3f4c4e6b01"
+    - CODECOV_TOKEN="d4540ca5-3c4b-452b-83df-9d32f83e2d2d"
 
 branches:
   only:

@@ -65,5 +65,5 @@ after_script:
     - lcov --capture --directory ./test/CMakeFiles/singlethread_test.dir/__/src --output-file coverage_singlethread_test.info
     - lcov --capture --directory ./multithread/CMakeFiles/multithread_lib.dir/src --output-file coverage_multithread.info
     - lcov --capture --directory ./test/CMakeFiles/multithread_test.dir/__/src --output-file coverage_multithread_test.info
-    - lcov -a coverage_singlethread.info -a coverage_singlethread_test.info-o -a coverage_multithread.info -a coverage_multithread_test.info -o coverage.info
-    - bash <(curl -s https://codecov.io/bash) -f coverage.info
+    - lcov -a coverage_singlethread.info -a coverage_singlethread_test.info -a coverage_multithread.info -a coverage_multithread_test.info -o coverage.info
+    - bash <(curl -s https://codecov.io/bash) -f coverage.info || travis_terminate 1

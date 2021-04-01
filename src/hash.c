@@ -58,7 +58,7 @@ errco_t hashtable_insert(hashtable_t *table, entry_value_t *entry_value) {
 
   new_node = (entry_t *)malloc(sizeof(entry_t));
 
-  if (errno == 0 && table->table != NULL) {
+  if (errno == 0 && new_node != NULL) {
     new_node->key = hash_code;
 
     errno = 0;

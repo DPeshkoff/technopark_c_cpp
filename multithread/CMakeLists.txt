@@ -8,7 +8,7 @@ set(CMAKE_C_FLAGS "--coverage -Wall -Werror -Wpedantic -pthread")
 set(CMAKE_CXX_FLAGS "--coverage -Wall -Werror -Wpedantic -pthread")
 
 include_directories("../headers/")
-add_library(multithread_lib src/hashtable_find.c ${HEADERS})
+add_library(multithread_lib SHARED src/hashtable_find.c ${HEADERS})
 
 
 target_include_directories(multithread_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

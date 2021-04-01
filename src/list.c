@@ -1,5 +1,10 @@
 #include "list.h"
 
+static void _list_split(list_node_t *src, list_node_t **low, list_node_t **high);
+
+static void _list_merge(list_node_t *low, list_node_t *high, list_node_t **start, field_t mode);
+
+
 /*
  * list_push
  */
@@ -103,36 +108,34 @@ void _list_split(list_node_t *src, list_node_t **low, list_node_t **high) {
   (*low) = src;
   (*high) = slow->next;
   slow->next = NULL;
-
-  return;
 }
 
-void _list_merge(list_node_t *a, list_node_t *b, list_node_t **c, field_t mode) {
+void _list_merge(list_node_t *low, list_node_t *high, list_node_t **start, field_t mode) {
   list_node_t tmp;
   bool condition;
 
-  *c = NULL;
-  if (a == NULL) {
-    *c = b;
+  *start = NULL;
+  if (low == NULL) {
+    *start = high;
     return;
   }
 
-  if (b == NULL) {
-    *c = a;
+  if (high == NULL) {
+    *start = low;
     return;
   }
 
   switch (mode) {
     case first_name:
-      condition = a->value.first_name[0] < b->value.first_name[0];
+      condition = low->value.first_name[0] < high->value.first_name[0];
       break;
 
     case last_name:
-      condition = a->value.last_name[0] < b->value.last_name[0];
+      condition = low->value.last_name[0] < high->value.last_name[0];
       break;
 
     case position:
-      condition = a->value.position[0] < b->value.position[0];
+      condition = low->value.position[0] < high->value.position[0];
       break;
 
     default:
@@ -140,48 +143,40 @@ void _list_merge(list_node_t *a, list_node_t *b, list_node_t **c, field_t mode) 
   }
 
   if (condition) {
-    *c = a;
-    a = a->next;
+    *start = low;
+    low = low->next;
   } 
   else {
-    *c = b;
-    b = b->next;
+    *start = high;
+    high = high->next;
   }
 
-  tmp.next = *c;
+  tmp.next = *start;
 
-  while (a && b) {
+  while (low && high) {
     if (condition) {
-      (*c)->next = a;
-      a = a->next;
+      (*start)->next = low;
+      low = low->next;
     } 
     else {
-      (*c)->next = b;
-      b = b->next;
+      (*start)->next = high;
+      high = high->next;
     }
 
-    (*c) = (*c)->next;
+    (*start) = (*start)->next;
   }
 
-  if (a) {
-
-    while (a) {
-      (*c)->next = a;
-      (*c) = (*c)->next;
-      a = a->next;
-    }
-
+  while (low) {
+    (*start)->next = low;
+    (*start) = (*start)->next;
+    low = low->next;
   }
-  if (b) {
 
-    while (b) {
-      (*c)->next = b;
-      (*c) = (*c)->next;
-      b = b->next;
-    }
-
+  while (high) {
+    (*start)->next = high;
+    (*start) = (*start)->next;
+    high = high->next;
   }
-  *c = tmp.next;
 
-  return;
+  *start = tmp.next;
 }

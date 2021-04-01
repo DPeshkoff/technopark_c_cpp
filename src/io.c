@@ -77,7 +77,7 @@ errco_t double_input(double *input_field, FILE *input) {
 }
 
 errco_t entry_value_input(entry_value_t *new_entry, FILE *input, bool mode) {
-  errco_t err = 0;
+  errco_t err;
 
   if (new_entry == NULL) {
     return ENE;
@@ -199,7 +199,7 @@ errco_t gender_translation(const gender_t *tbool) {
 
 errco_t entry_value_output(entry_value_t *entry) {
   int bytes = 0;
-  errco_t err = 0;
+  errco_t err;
   bytes = printf(" %s\n %s\n %s\n", entry->first_name, entry->last_name,
                  entry->position);
   if (bytes == 0) {

@@ -9,6 +9,6 @@ set(CMAKE_CXX_FLAGS "--coverage -Wall -Werror -Wpedantic")
 
 include_directories("../headers/")
 set(SOURCE src/hashtable_find.c)
-add_library(singlethread_lib ${SOURCE} ${HEADERS})
+add_library(singlethread_lib STATIC ${SOURCE} ${HEADERS})
 
 target_include_directories(singlethread_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

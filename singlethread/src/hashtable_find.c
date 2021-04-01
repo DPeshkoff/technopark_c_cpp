@@ -7,7 +7,7 @@ errco_t hashtable_find(hashtable_t* table, list_node_t** list) {
     return EHTN;
   }
 
-  for (int i = 0; i < table->capacity; ++i) {
+  for (size_t i = 0; i < table->capacity; ++i) {
     entry_t* current_entry = table->table[i];
     bool is_not_empty = false;
 
@@ -26,12 +26,11 @@ errco_t hashtable_find(hashtable_t* table, list_node_t** list) {
       current_entry = current_entry->next;
     }
     if (is_not_empty) {
-      errco_t err = 0;
+      errco_t err;
       err = list_push(list, min_entry);
       if (err != EXIT_SUCCESS) {
         return err;
       }
-      err = 0;
       err = list_push(list, max_entry);
       if (err != EXIT_SUCCESS) {
         return err;

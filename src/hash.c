@@ -8,7 +8,7 @@ errco_t hash(entry_value_t *entry, const unsigned int mod_value,
     return EWHB;
   }
 
-  for (int i = 0; i < strlen(entry->position); ++i) {
+  for (size_t i = 0; i < strlen(entry->position); ++i) {
     key_sum += entry->position[i];
   }
 
@@ -27,7 +27,7 @@ errco_t hashtable_create(hashtable_t *table, unsigned int capacity) {
   table->table = (entry_t **)malloc(sizeof(entry_t) * capacity);
 
   if (errno == 0 && table->table != NULL) {
-    for (int i = 0; i < capacity; ++i) {
+    for (size_t i = 0; i < capacity; ++i) {
       table->table[i] = NULL;
     }
 
@@ -45,7 +45,7 @@ errco_t hashtable_create(hashtable_t *table, unsigned int capacity) {
 
 errco_t hashtable_insert(hashtable_t *table, entry_value_t *entry_value) {
   entry_t *new_node;
-  errco_t err = 0;
+  errco_t err;
   int hash_code = 0;
 
   err = hash(entry_value, table->capacity, &hash_code);
@@ -74,7 +74,7 @@ errco_t hashtable_insert(hashtable_t *table, entry_value_t *entry_value) {
     } else {
       free(new_node);
       perror(
-          "[Error] Memory allocation error at function hashtable_insert(...) ");
+          "[Error] Memory copy error at function hashtable_insert(...) ");
       return EMF;
     }
   } else {
@@ -94,7 +94,7 @@ errco_t hashtable_delete(hashtable_t *table) {
     return EHTE;
   }
 
-  for (int i = 0; i < table->capacity; ++i) {
+  for (size_t i = 0; i < table->capacity; ++i) {
     current_entry = table->table[i];
     while (current_entry) {
       next_entry = current_entry->next;

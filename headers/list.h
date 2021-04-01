@@ -17,7 +17,7 @@ typedef struct list_node_t {
 } list_node_t;
 #pragma pack(pop)
 
-typedef enum field_t { first_name = 0, last_name = 1, position = 2} field_t;
+typedef enum field_t { first_name = 0, last_name = 1, position = 2 } field_t;
 
 errco_t list_push(list_node_t** start, entry_value_t entry_value);
 
@@ -26,9 +26,3 @@ errco_t list_printf(list_node_t** start);
 errco_t list_sort(list_node_t** start, field_t mode);
 
 errco_t list_delete(list_node_t** start);
-
-// Private methods for list_sort //
-
-void _list_split(list_node_t *src, list_node_t **low, list_node_t **high);
-
-void _list_merge(list_node_t *a, list_node_t *b, list_node_t **c, field_t mode);

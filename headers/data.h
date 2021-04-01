@@ -15,7 +15,7 @@ typedef enum gender_t { FEMALE = 1, MALE = 0, NOT_STATED = -1 } gender_t;
 typedef struct entry_value_t {
   char* first_name;
   char* last_name;
-  char* position;  
+  char* position;
   gender_t sex;
   double age;
   double salary;
@@ -30,5 +30,3 @@ typedef struct entry_t {
   struct entry_t* next;
 } entry_t;
 #pragma pack(pop)
-
-
